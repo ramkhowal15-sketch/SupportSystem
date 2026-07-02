@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Domain.Commons;
 
-public class BaseAuditableEntity
+public class BaseAuditableEntity : IBaseAuditableEntity
 {
     public int Id { get; set; }
     public int? CreatedBy { get; set; }
@@ -12,5 +12,6 @@ public class BaseAuditableEntity
     public DateTime? CreateDate { get; set; }
     public DateTime? UpdateDate { get; set; }
     public bool IsActive { get; set; }
-    public bool IsDeleted { get; set; }
+    public bool IsDelete { get; set; }
+  
 }

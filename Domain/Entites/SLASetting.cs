@@ -7,5 +7,7 @@ namespace Domain.Entites;
 
 public class SLASetting : BaseAuditableEntity
 {
-
+    public string Priorty {  get; set; }
+    public int ResponseTimeHours { get; set; }
+    public int ResolutionTimeHours { get; set; }
 }

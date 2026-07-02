@@ -9,13 +9,14 @@ namespace Domain.Entites;
 public class Product : BaseAuditableEntity
 {
     public string ProductName { get; set; }
-    public int InvoiceNo { get; set; }
-    public int SerialNo { get; set; }
-    public int IMEINo { get; set; }
+    public string ProductDescription { get; set; }
 
-    [ForeignKey("UserId")]
-    public int UserId { get; set; }
-    public User? User { get; set; }
+    public long Price { get; set; }
+    public ICollection<Purchase> purchases { get; set; }
+
+    //[ForeignKey("UserId")]
+    //public int UserId { get; set; }
+    //public User? User { get; set; }
 
     
 }

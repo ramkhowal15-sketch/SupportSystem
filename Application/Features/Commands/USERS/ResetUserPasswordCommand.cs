@@ -35,7 +35,7 @@ public class ResetUserPasswordCommand : IRequest<Result<string>>
 
             // await the async AnyAsync to get a bool
             var isvalidateotp = await _unitOfWork.Repository<Otp>()
-                .Entiteis.AnyAsync(x => x.Id == user.Id && x.OTPCode == command.OtpCode, cancellationToken);
+                .Entiteis.AnyAsync(x => x.UserId == user.Id && x.OTPCode == command.OtpCode, cancellationToken);
 
             if (!isvalidateotp)
             {

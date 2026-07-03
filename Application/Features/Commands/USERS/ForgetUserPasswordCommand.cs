@@ -42,8 +42,10 @@ public class ForgetUserPasswordCommand : IRequest<Result<string>>
             var otp = new Otp
             {
                 OTPCode = otpCode,
+                UserId = user.Id,
                 Time = DateTime.Now,
                 isUsed = false     
+                
             };
 
             await _unitOfWork.Repository<Otp>().PostAsync(otp);

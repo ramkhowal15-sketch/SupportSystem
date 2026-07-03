@@ -13,15 +13,7 @@ public class Ticket : BaseAuditableEntity
     public string Status { get; set; }
     public string TicketPriorty {  get; set; }
 
-    [ForeignKey("CustomerId")]
-    public int CustomerId { get; set; }
-    public Customer? customer { get; set; }
-
-    [ForeignKey("AssignedemplyoeeId")]
-    public int AssignedemplyoeeId {  get; set; }
-    public Employee? employee { get; set; }
-
-    public ICollection<TicketReply> replies { get; set; }
-    public ICollection<TicketAttechment> attechments { get; set; }
-    public ICollection<TicketHistory> ticketHistories { get; set; }
+    public ICollection<TicketReply> Replies { get; set; }
+    public ICollection<TicketAttechment> Attechments { get; set; }
+    public ICollection<TicketHistory> TicketHistories { get; set; }
 }

@@ -12,9 +12,9 @@ public class Notification : BaseAuditableEntity
     public string massage { get; set; }
     public bool isRead { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("User")]
     public int UserId { get; set; }
-    public User? user { get; set; }
+    public User? User { get; set; }
 
 
 }

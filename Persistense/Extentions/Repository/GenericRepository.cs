@@ -26,7 +26,7 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
         {
             throw new Exception($"{typeof(T).Name} does not exist");
         }
-        exist.IsDeleted = true;
+        exist.IsDelete = true;
         exist.UpdateDate = DateTime.UtcNow;
 
         _Context.Set<T>().Update(exist);
@@ -35,7 +35,7 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
 
     public async Task<List<T>> GetAll()
     {
-        return await _Context.Set<T>().Where(x => !x.IsDeleted).ToListAsync();
+        return await _Context.Set<T>().Where(x => !x.IsDelete).ToListAsync();
     }
 
     public async Task<T> GetByIdAsync(int id)
@@ -51,7 +51,7 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
     public async Task<T> PostAsync(T entity)
     {
         entity.CreateDate = DateTime.Now;
-        entity.IsDeleted = false;
+        entity.IsDelete = false;
         entity.IsActive = true;
 
         await _Context.Set<T>().AddAsync(entity);

@@ -11,12 +11,12 @@ public class TicketHistory : BaseAuditableEntity
     public string Action {  get; set; }
     public DateTime ActionDate { get; set; }
 
-    [ForeignKey("TicketId")]
+    [ForeignKey("ticket")]
     public int TicketId { get; set; }
     public Ticket? ticket { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("User")]
     public int UserId { get; set; }
-    public User? user { get; set; }
+    public User? User { get; set; }
 
 }

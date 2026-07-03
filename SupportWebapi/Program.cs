@@ -1,34 +1,69 @@
+using Application.Extentions;
+using Infrastracture.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using Persistense.Extentions;
+using System.Text;
+ 
 
-namespace SupportWebapi
+
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddOpenApi();
+builder.Services.AddCors(options =>
 {
-    public class Program
-    {
-        public static void Main(string[] args)
+    options.AddPolicy("Frontend",
+        policy =>
         {
-            var builder = WebApplication.CreateBuilder(args);
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 
-            // Add services to the container.
+builder.Services.AddHttpContextAccessor();
 
-            builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+builder.Services.AddControllers();
+builder.Services.AddPersistence(builder.Configuration);
+builder.Services.AddRepository();
+builder.Services.AddApplicationLayer();
+builder.Services.AddService();
+builder.Services.AddEndpointsApiExplorer();
 
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
+builder.Services.AddSwaggerGen(options => { options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() { Name = "Authorization", Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT", In = ParameterLocation.Header, Description = "Enter token like: Bearer {your JWT token}" }); options.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document, externalResource: null)] = [] }); });
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 
 
-            app.MapControllers();
+{
+    var key = builder.Configuration["JWTSettings:SecretKey"];
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWTSettings:Issuer"],
+        ValidAudience = builder.Configuration["JWTSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+    };
+});
+builder.Services.AddAuthorization();
 
-            app.Run();
-        }
-    }
-}
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseCors("Frontend");
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.Run();

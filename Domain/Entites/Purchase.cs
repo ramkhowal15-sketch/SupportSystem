@@ -11,7 +11,5 @@ public class Purchase : BaseAuditableEntity
     public int Quantity { get; set; }
     public DateOnly PurchaseDate { get; set; }
 
-    [ForeignKey("CustomerId")]
-    public int CustomerId { get; set; }
-    public Customer? customer { get; set; }
+    
 }

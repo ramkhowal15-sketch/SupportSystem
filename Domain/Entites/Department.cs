@@ -10,5 +10,5 @@ public class Department : BaseAuditableEntity
     public string DepartmentName { get; set; }
     public string DepartmentDescription { get; set; }
 
-    public ICollection<Employee> employees { get; set; }
+    
 }

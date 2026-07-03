@@ -10,11 +10,11 @@ public class TicketReply : BaseAuditableEntity
 {
     public string TicketMassage { get; set; }
 
-    [ForeignKey("TicketId")]
+    [ForeignKey("ticket")]
     public int TicketId { get; set; }
     public Ticket? ticket { get; set; }
 
-    [ForeignKey("UserId")]
+    [ForeignKey("User")]
     public int UserId { get; set; }
-    public User? user { get; set; }
+    public User? User { get; set; }
 }

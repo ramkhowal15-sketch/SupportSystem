@@ -13,7 +13,7 @@ public class TicketAttechment : BaseAuditableEntity
     public string FileType { get; set; }
     public DateTime UploadDate { get; set; }
 
-    [ForeignKey("TicketId")]
+    [ForeignKey("Ticket")]
     public int TicketId { get; set; }
-    public Ticket? ticket { get; set; }
+    public Ticket? Ticket { get; set; }
 }

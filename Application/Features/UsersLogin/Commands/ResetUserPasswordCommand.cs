@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Features.Commands.USERS;
+namespace Application.Features.Users.Commands;
 
 public class ResetUserPasswordCommand : IRequest<Result<string>>
 {
@@ -27,14 +27,14 @@ public class ResetUserPasswordCommand : IRequest<Result<string>>
 
         public async Task<Result<string>> Handle(ResetUserPasswordCommand command, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Repository<User>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email, cancellationToken);
+            var user = await _unitOfWork.Repository<User,int>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email, cancellationToken);
             if (user == null)
             {
                 return Result<string>.BadRequest("Email or UserName Are not match");
             }
 
             // await the async AnyAsync to get a bool
-            var isvalidateotp = await _unitOfWork.Repository<Otp>()
+            var isvalidateotp = await _unitOfWork.Repository<Otp,int>()
                 .Entiteis.AnyAsync(x => x.UserId == user.Id && x.OTPCode == command.OtpCode, cancellationToken);
 
             if (!isvalidateotp)

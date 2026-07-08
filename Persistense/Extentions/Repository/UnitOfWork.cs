@@ -17,17 +17,17 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
     }
 
-    public IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity
+    public IGenericRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : BaseAuditableEntity<TKey>
     {
-        var type = typeof(T).Name;
+        var key = $"{typeof(TEntity).FullName}_{typeof(TKey).FullName}";
 
-        if (!_repo.ContainsKey(type))
+        if (!_repo.ContainsKey(key))
         {
-            var repository = new GenericRepository<T>(_context);
-
-            _repo.Add(type, repository);
+            var repository = new GenericRepository<TEntity, TKey>(_context);
+            _repo.Add(key, repository);
         }
-        return (IGenericRepository<T>)_repo[type];
+
+        return (IGenericRepository<TEntity, TKey>)_repo[key];
     }
 
     public Task<int> Save(CancellationToken cancellationToken)

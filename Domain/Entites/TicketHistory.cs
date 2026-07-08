@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class TicketHistory : BaseAuditableEntity
+public class TicketHistory : BaseAuditableEntity<int>
 {
     public string Action {  get; set; }
     public DateTime ActionDate { get; set; }

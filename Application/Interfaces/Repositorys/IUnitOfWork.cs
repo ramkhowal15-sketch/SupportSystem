@@ -7,7 +7,6 @@ namespace Application.Interfaces.Repositorys;
 
 public interface IUnitOfWork
 {
-    IGenericRepository<T> Repository<T>() where T : BaseAuditableEntity;
-
+    IGenericRepository<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : BaseAuditableEntity<TKey>;
     Task<int> Save(CancellationToken cancellationToken);
 }

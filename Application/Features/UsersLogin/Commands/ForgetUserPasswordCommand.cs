@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Features.Commands.USERS;
+namespace Application.Features.Users.Commands;
 
 public class ForgetUserPasswordCommand : IRequest<Result<string>>
 {
@@ -29,7 +29,7 @@ public class ForgetUserPasswordCommand : IRequest<Result<string>>
 
         public async Task<Result<string>> Handle(ForgetUserPasswordCommand command, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.Repository<User>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email);
+            var user = await _unitOfWork.Repository<User,int>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email);
 
             if (user == null)
             {
@@ -48,7 +48,7 @@ public class ForgetUserPasswordCommand : IRequest<Result<string>>
                 
             };
 
-            await _unitOfWork.Repository<Otp>().PostAsync(otp);
+            await _unitOfWork.Repository<Otp,int>().PostAsync(otp);
             await _unitOfWork.Save(cancellationToken);
 
 

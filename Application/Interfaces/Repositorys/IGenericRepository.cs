@@ -4,12 +4,13 @@ using System.Text;
 
 namespace Application.Interfaces.Repositorys;
 
-public interface IGenericRepository<T> where T : class
+public interface IGenericRepository<T,Tkey> where T : class
 {
     IQueryable<T> Entiteis { get; }
-    Task<T> PostAsync(T entity);
-    Task<T> PutAsync(int id, T entity);
-    Task<T> DeleteAsync(int id);
-    Task<T> GetByIdAsync(int id);
+
     Task<List<T>> GetAll();
+    Task<T?> GetByIdAsync(int id);
+    Task<T> PostAsync(T entity);
+    Task<T> PutAsync(Tkey id, T entity);
+    Task<T> DeleteAsync(Tkey tkey);
 }

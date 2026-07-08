@@ -12,8 +12,8 @@ using Persistense.DataContext;
 namespace Persistense.Migrations
 {
     [DbContext(typeof(ApplicationDataContext))]
-    [Migration("20260703060958_intial")]
-    partial class intial
+    [Migration("20260707063353_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -143,10 +143,15 @@ namespace Persistense.Migrations
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("isUsed")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Otps");
                 });
@@ -237,11 +242,9 @@ namespace Persistense.Migrations
 
             modelBuilder.Entity("Domain.Entites.Role", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime2");
@@ -545,8 +548,8 @@ namespace Persistense.Migrations
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -562,6 +565,17 @@ namespace Persistense.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entites.Notification", b =>
+                {
+                    b.HasOne("Domain.Entites.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entites.Otp", b =>
                 {
                     b.HasOne("Domain.Entites.User", "User")
                         .WithMany()

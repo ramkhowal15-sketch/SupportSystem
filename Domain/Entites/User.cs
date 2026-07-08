@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class User : BaseAuditableEntity
+public class User : BaseAuditableEntity<int>
 {
    public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -14,8 +14,8 @@ public class User : BaseAuditableEntity
     public string Password {  get; set; }
     public long PhoneNumber {  get; set; }
 
-    //[ForeignKey("Role")]
-    //public int RoleId { get; set; }
-    //public Role? Role { get; set; }
-    
+    [ForeignKey("Role")]
+    public Guid RoleId { get; set; }
+    public Role? Role { get; set; }
+
 }

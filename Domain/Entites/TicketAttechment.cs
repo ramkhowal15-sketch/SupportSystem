@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class TicketAttechment : BaseAuditableEntity
+public class TicketAttechment : BaseAuditableEntity<int>
 {
     public string FileName { get; set; }
     public string FilePath { get; set; }

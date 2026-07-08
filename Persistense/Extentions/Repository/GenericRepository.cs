@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Persistense.Extentions.Repository;
 
-public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditableEntity
+public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : BaseAuditableEntity<TKey>
 {
     private readonly ApplicationDataContext _Context;
     public GenericRepository(ApplicationDataContext Context)
@@ -18,18 +18,20 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
 
     public IQueryable<T> Entiteis => _Context.Set<T>();
 
-    public async Task<T> DeleteAsync(int id)
+    public async Task<T> DeleteAsync(TKey id)
     {
-        var exist = await _Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        var exist = await _Context.Set<T>().FirstOrDefaultAsync(x => x.Id!.Equals(id));
 
         if (exist == null)
         {
             throw new Exception($"{typeof(T).Name} does not exist");
         }
+
         exist.IsDelete = true;
         exist.UpdateDate = DateTime.UtcNow;
 
         _Context.Set<T>().Update(exist);
+
         return exist;
     }
 
@@ -40,7 +42,7 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
 
     public async Task<T> GetByIdAsync(int id)
     {
-        var exist = await _Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        var exist = await _Context.Set<T>().FirstOrDefaultAsync(x => x.Id!.Equals(id));
         if (exist == null)
         {
             throw new Exception($"{typeof(T).Name} does not exist");
@@ -58,9 +60,9 @@ public class GenericRepository<T> : IGenericRepository<T>where T : BaseAuditable
         return entity;
     }
 
-    public Task<T> PutAsync(int id, T entity)
+    public Task<T> PutAsync(TKey id, T entity)
     {
-        var exist = _Context.Set<T>().FirstOrDefaultAsync(x => x.Id == id);
+        var exist = _Context.Set<T>().FirstOrDefaultAsync(x => x.Id!.Equals(id));
         if (exist == null)
         {
             throw new Exception($"{typeof(T).Name} does not exist.");

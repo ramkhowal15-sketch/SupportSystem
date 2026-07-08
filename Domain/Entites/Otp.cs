@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class Otp : BaseAuditableEntity
+public class Otp : BaseAuditableEntity<int>
 {
     public int OTPCode { get; set; }
-    public bool isUsed { get; set; }
+    public bool IsUsed { get; set; }
     public DateTime Time {  get; set; }
 
     [ForeignKey("User")]

@@ -6,11 +6,10 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class Product : BaseAuditableEntity
+public class Product : BaseAuditableEntity<int>
 {
     public string ProductName { get; set; }
     public string ProductDescription { get; set; }
-
     public long Price { get; set; }
     public ICollection<Purchase> purchases { get; set; }
 

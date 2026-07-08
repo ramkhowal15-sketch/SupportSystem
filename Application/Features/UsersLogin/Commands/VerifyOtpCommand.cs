@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Features.Commands.USERS;
+namespace Application.Features.Users.Commands;
 
 public class VerifyOtpCommand : IRequest<Result<string>>
 {
@@ -26,7 +26,7 @@ public class VerifyOtpCommand : IRequest<Result<string>>
             VerifyOtpCommand command,
             CancellationToken cancellationToken)
         {
-            var otp = await _unitOfWork.Repository<Otp>().Entiteis.Where(x => x.OTPCode == command.OtpCode).OrderByDescending(x => x.Time)
+            var otp = await _unitOfWork.Repository<Otp,int>().Entiteis.Where(x => x.OTPCode == command.OtpCode).OrderByDescending(x => x.Time)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (otp == null)
@@ -45,7 +45,7 @@ public class VerifyOtpCommand : IRequest<Result<string>>
                 return Result<string>.BadRequest("OTP has expired");
             }
 
-            var todayOtpCount = await _unitOfWork.Repository<Otp>()
+            var todayOtpCount = await _unitOfWork.Repository<Otp,int>()
                 .Entiteis
                 .Where(x =>
                     x.Id == otp.Id &&

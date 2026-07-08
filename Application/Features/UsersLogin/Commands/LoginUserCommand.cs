@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Application.Features.Commands.USERS;
+namespace Application.Features.Users.Commands;
 
 public class LoginUserCommand : IRequest<Result<string>>
 {
@@ -27,7 +27,7 @@ internal class LogInUserCommandhandler : IRequestHandler<LoginUserCommand, Resul
 
     public async Task<Result<string>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
-        var user = await _unitOfWork.Repository<User>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email);
+        var user = await _unitOfWork.Repository<User,int>().Entiteis.FirstOrDefaultAsync(x => x.Email == command.Email);
 
         if (user != null)
         {
@@ -40,11 +40,6 @@ internal class LogInUserCommandhandler : IRequestHandler<LoginUserCommand, Resul
 
         }
         return Result<string>.BadRequest("Login Failed");
-
-
-
-
-
 
 
     }

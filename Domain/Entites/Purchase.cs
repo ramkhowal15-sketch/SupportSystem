@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class Purchase : BaseAuditableEntity
+public class Purchase : BaseAuditableEntity<int>
 {
     public int Quantity { get; set; }
     public DateOnly PurchaseDate { get; set; }

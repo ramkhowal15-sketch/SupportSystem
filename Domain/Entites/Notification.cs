@@ -6,11 +6,11 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class Notification : BaseAuditableEntity
+public class Notification : BaseAuditableEntity<int>
 {
     public string Title { get; set; }
-    public string massage { get; set; }
-    public bool isRead { get; set; }
+    public string Massage { get; set; }
+    public bool IsRead { get; set; }
 
     [ForeignKey("User")]
     public int UserId { get; set; }

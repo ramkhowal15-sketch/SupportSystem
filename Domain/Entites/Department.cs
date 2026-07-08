@@ -5,10 +5,8 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class Department : BaseAuditableEntity
+public class Department : BaseAuditableEntity<int>
 {
     public string DepartmentName { get; set; }
     public string DepartmentDescription { get; set; }
-
-    
 }

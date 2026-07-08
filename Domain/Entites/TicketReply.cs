@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Domain.Entites;
 
-public class TicketReply : BaseAuditableEntity
+public class TicketReply : BaseAuditableEntity<int>
 {
     public string TicketMassage { get; set; }
 

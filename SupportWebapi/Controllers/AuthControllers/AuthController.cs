@@ -1,6 +1,4 @@
-﻿
-using Application.Features.Commands.Users;
-using Application.Features.Commands.USERS;
+﻿using Application.Features.Users.Commands;
 using Application.Interfaces.Repositorys;
 using Domain.Entites;
 using MediatR;
@@ -66,8 +64,7 @@ namespace WebApi.Controllers
 
         public async Task<IActionResult> Getall()
         {
-            var users = await _unitOfWork.Repository<User>().GetAll();
-            // wrap into Result<List<Users>> to match Responsehelper expectation
+            var users = await _unitOfWork.Repository<User,int>().GetAll();
             var result = Shared.Result<List<User>>.Success(users, "Success");
             return Responsehelper.GenerateResponse(result);
         }

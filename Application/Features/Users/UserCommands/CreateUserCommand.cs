@@ -3,6 +3,7 @@ using Application.Features.Users.UserCommands;
 using Application.Interfaces.Repositorys;
 using Domain.Entites;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ public class CreateUserCommand : IRequest<Result<int>> , ICreateMapFrom<User>
    public string Email { get; set; }
    public string Password { get; set; }
    public long PhoneNumber { get; set; }
+   public Guid RoleId { get; set; }
 }
 internal class CreateUserCommandhandler : IRequestHandler<CreateUserCommand, Result<int>>
 {
@@ -27,16 +29,23 @@ internal class CreateUserCommandhandler : IRequestHandler<CreateUserCommand, Res
         _unitOfWork = unitofWork;
     }
 
+    
 
     public async Task<Result<int>> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
+        var role = await _unitOfWork.Repository<Role, Guid>().Entiteis.FirstOrDefaultAsync(x => x.Id == command.RoleId);
+        if (role == null)
+        {
+            return Result<int>.BadRequest("Invailid Role Id");
+        }
         var user = new User
         {
             FirstName = command.FirstName,
             LastName = command.LastName,
             Email = command.Email,
             Password = command.Password,
-            PhoneNumber = command.PhoneNumber
+            PhoneNumber = command.PhoneNumber,
+            RoleId=command.RoleId
         };
 
         await _unitOfWork.Repository<User,int>().PostAsync(user);

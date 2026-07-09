@@ -20,13 +20,9 @@ namespace WebApi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpPost("Register")]
+      
 
-        public async Task<IActionResult> Resgister(RegisterUserCommand command)
-        {
-            var response = await _mediator.Send(command);
-            return Responsehelper.GenerateResponse(response);
-        }
+       
 
         [HttpPost("Login")]
 

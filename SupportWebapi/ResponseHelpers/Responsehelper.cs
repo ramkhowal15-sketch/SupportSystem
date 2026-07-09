@@ -13,7 +13,7 @@ public static class Responsehelper
         {
             data = request.Data,
             code = request.Code,
-            message = request.massage,
+            message = request.Message,
             token = request.Token,
             isSuccesed = request.IsSuccess,
             exception = request.Exception

@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Qurreys\" />
-    <Folder Include="Features\Roles\Qurreis\" />
   </ItemGroup>
 
   <ItemGroup>

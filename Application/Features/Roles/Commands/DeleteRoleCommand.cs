@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces.Repositorys;
+using AutoMapper;
 using Domain.Entites;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,13 +14,20 @@ public class DeleteRoleCommand : IRequest<Result<string>>
 {
     public Guid RoleId { get; set;  }
 
+    public DeleteRoleCommand(Guid roleId)
+    {
+        RoleId = roleId;
+    }
+
     internal class DeleteRoleCommadhandler : IRequestHandler<DeleteRoleCommand, Result<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public DeleteRoleCommadhandler(IUnitOfWork unitOfWork)
+        public DeleteRoleCommadhandler(IUnitOfWork unitOfWork,IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<Result<string>> Handle(DeleteRoleCommand command, CancellationToken cancellationToken)
@@ -31,6 +39,7 @@ public class DeleteRoleCommand : IRequest<Result<string>>
                 return Result<string>.BadRequest("Role Not found");
             }
 
+            _mapper.Map<Role>(role);
             await _unitOfWork.Repository<Role,Guid>().DeleteAsync(command.RoleId);
             await _unitOfWork.Save(cancellationToken);
 

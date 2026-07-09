@@ -34,7 +34,7 @@ public class VerifyOtpCommand : IRequest<Result<string>>
                 return Result<string>.BadRequest("Invalid OTP");
             }
 
-            if (otp.isUsed)
+            if (otp.IsUsed)
             {
                 return Result<string>.BadRequest("OTP already used");
             }
@@ -57,7 +57,7 @@ public class VerifyOtpCommand : IRequest<Result<string>>
                 return Result<string>.BadRequest("You have reached your daily limit");
             }
 
-            otp.isUsed = true;
+            otp.IsUsed = true;
 
             await _unitOfWork.Save(cancellationToken);
 

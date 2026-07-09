@@ -40,7 +40,7 @@ public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : 
         return await _Context.Set<T>().Where(x => !x.IsDelete).ToListAsync();
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(TKey id)
     {
         var exist = await _Context.Set<T>().FirstOrDefaultAsync(x => x.Id!.Equals(id));
         if (exist == null)

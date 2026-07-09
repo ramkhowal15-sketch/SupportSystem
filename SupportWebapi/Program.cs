@@ -5,13 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Persistense.Extentions;
 using System.Text;
- 
-
-
-
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
@@ -35,10 +30,27 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddService();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(options => { options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() { Name = "Authorization", Type = SecuritySchemeType.Http, Scheme = "bearer", BearerFormat = "JWT", In = ParameterLocation.Header, Description = "Enter token like: Bearer {your JWT token}" }); options.AddSecurityRequirement(document => new OpenApiSecurityRequirement { [new OpenApiSecuritySchemeReference("Bearer", document, externalResource: null)] = [] }); });
+// Explicit AutoMapper registration - replace the type below with any class in your Application assembly
+builder.Services.AddAutoMapper(cfg => { }, typeof(Application.Features.Roles.Commands.CreateRoleCommand).Assembly);
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter token like: Bearer {your JWT token}"
+    });
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("Bearer", document, externalResource: null)] = []
+    });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-
-
 {
     var key = builder.Configuration["JWTSettings:SecretKey"];
     options.TokenValidationParameters = new TokenValidationParameters()
@@ -54,7 +66,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddAuthorization();
 
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -62,8 +73,8 @@ app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
-
 app.MapControllers();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.Run();

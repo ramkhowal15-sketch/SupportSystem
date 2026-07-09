@@ -44,7 +44,7 @@ public class ForgetUserPasswordCommand : IRequest<Result<string>>
                 OTPCode = otpCode,
                 UserId = user.Id,
                 Time = DateTime.Now,
-                isUsed = false     
+                IsUsed = false,    
                 
             };
 
